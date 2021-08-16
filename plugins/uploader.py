@@ -29,10 +29,10 @@ async def upload_file(creds, file_path, filesize, parent_id, message):
         resumable=True
     )
     file_name = os.path.basename(file_path)
-    await message.edit(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
+    await message.edit(f'📤 **Subiendo...**\n**Nombre del archivo:** ```{file_name}```\n**Tamaño:** ```{filesize}```')
     body = {
         "name": file_name,
-        "description": "Uploaded Successfully",
+        "description": "Subido con éxito",
         "mimeType": mime_type,
     }
     if parent_id:
