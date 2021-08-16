@@ -91,7 +91,7 @@ def create_directory(service, directory_name, parent_id):
 async def _copy(client, message):
   creds = db.get_credential(message.from_user.id)
   if creds is None:
-    await message.reply_text('❗ **Not an authorized user.**\n__Authorize your Google Drive Account by  running /auth Command in order to use this bot.__', quote=True)
+    await message.reply_text('❗ **No es un usuario autorizado.**\n__Autorice su cuenta de Google Drive ejecutando /auth Comando para usar este bot.__', quote=True)
     return
   if sql.get_id(message.from_user.id):
     parent_id = sql.get_id(message.from_user.id).parent_id
@@ -99,13 +99,13 @@ async def _copy(client, message):
     parent_id = 'root'
   transferred_size = 0
   if len(message.command) > 1:
-    sent_message = await message.reply_text('**Checking Google Drive Link...**', quote=True)
+    sent_message = await message.reply_text('**Comprobando el enlace de Google Drive...**', quote=True)
     file_id = getIdFromUrl(message.command[1])
     if file_id == 'NotFound':
-      await sent_message.edit('❗ **Invalid Google Drive URL**\n__Only Google Drive links can be copied.__')
+      await sent_message.edit('❗ **URL de Google Drive no válido**\n__Solo se pueden copiar los enlaces de Google Drive.__')
       return
     else:
-      await sent_message.edit(f'🗂️ **Cloning to Google Drive...**\n__{file_id}__')
+      await sent_message.edit(f'🗂️ **Clonación en Google Drive...**\n__{file_id}__')
     service = build(
         "drive",
         "v3",
@@ -118,7 +118,7 @@ async def _copy(client, message):
       if err.resp.get('content-type', '').startswith('application/json'):
             reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
             if 'notFound' in reason:
-               await sent_message.edit('❗**ERROR: FILE NOT FOUND**\n__Make sure the file exists and accessible by the account you authenticated.__')
+               await sent_message.edit('❗**ERROR: ARCHIVO NO ENCONTRADO**\n__Asegúrese de que el archivo exista y que la cuenta que haya autenticado pueda acceder a él..__')
             else:
                await sent_message.edit(f"**ERROR:** ```{str(err).replace('>', '').replace('<', '')}```")
     except Exception as e:
@@ -127,14 +127,14 @@ async def _copy(client, message):
        dir_id = create_directory(service, meta.get('name'), parent_id)
        try:
          result, transferred_size = cloneFolder(service, meta.get('name'), meta.get('name'), meta.get('id'), dir_id, transferred_size)
-         await sent_message.edit(f"✅ **Copied successfully.**\n[{meta.get('name')}]({G_DRIVE_FOLDER_LINK.format(dir_id)}) __({humanbytes(transferred_size)})__")
+         await sent_message.edit(f"✅ **Copiado exitosamente.**\n[{meta.get('name')}]({G_DRIVE_FOLDER_LINK.format(dir_id)}) __({humanbytes(transferred_size)})__")
        except Exception as e:
          await sent_message.edit(f'**ERROR:** ```{e}```')
     else:
       try:
          file = copyFile(service, meta.get('id'), parent_id)
-         await sent_message.edit(f"✅ **Copied successfully.**\n[{file.get('name')}]({G_DRIVE_FILE_LINK.format(file.get('id'))}) __({humanbytes(int(meta.get('size')))})__")
+         await sent_message.edit(f"✅ **Copiado exitosamente.**\n[{file.get('name')}]({G_DRIVE_FILE_LINK.format(file.get('id'))}) __({humanbytes(int(meta.get('size')))})__")
       except Exception as e:
          await sent_message.edit(f'**ERROR:** ```{e}```')
   else:
-    await message.reply_text('**Copy Google Drive Files or Folder**\n__Copy GDrive Files/Folder to your Google Drive Account. Use__ ```/copy {GDriveFolderURL/FileURL}``` __for copying.__')
+    await message.reply_text('**Copiar archivos o carpetas de Google Drive**\n__Copie los archivos / carpetas de GDrive en su cuenta de Google Drive. Utilizar__ ```/copy {GDriveFolderURL/FileURL}``` __para copiar.__')
