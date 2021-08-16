@@ -15,7 +15,7 @@ from urllib.error import HTTPError
 async def _start(client, message):
   creds = db.get_credential(message.from_user.id)
   if creds is None:
-    await message.reply_text("🔑 **You have not authenticated me to upload to any account.**\n__Send /auth to authenticate.__", quote=True)
+    await message.reply_text("🔑 **No me has autenticado para subir a ninguna cuenta.**\n__Enviar /auth autenticar.__", quote=True)
     return
   if sql.get_id(message.from_user.id):
     parent_id = sql.get_id(message.from_user.id).parent_id
@@ -23,20 +23,20 @@ async def _start(client, message):
     parent_id = None
   if message.text:
     if message.text.startswith('http'):
-      sent_message = await message.reply_text('**Checking Link...**', quote=True)
+      sent_message = await message.reply_text('**Comprobando enlace...**', quote=True)
       filename = await download_file(client, message, sent_message)
       if filename in ("HTTPError"):
-        await sent_message.edit('**❗ Invalid URL**\n__Make sure it\'s a direct link and in working state.__')
+        await sent_message.edit('**❗ URL invalida**\n__Asegúrese de que sea un enlace directo y en estado de funcionamiento.__')
         return
   elif message.media:
-    sent_message = await message.reply_text('📥 **Downloading File...**', quote=True)
+    sent_message = await message.reply_text('📥 **Descargando archivo...**', quote=True)
     try:
       filename = await client.download_media(message=message)
     except Exception as e:
       sent_message.edit(f'**ERROR:** ```{e}```')
   filesize = humanbytes(os.path.getsize(filename))
   file_name = os.path.basename(filename)
-  await sent_message.edit(f'✅ **Download Completed**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```\n__Now starting upload...__')
+  await sent_message.edit(f'✅ **Descarga completa**\n**Nombre del archivo:** ```{file_name}```\n**Tamaño:** ```{filesize}```\n__Ahora comenzando a subir...__')
   file_id = await upload_file(
         creds=creds,
         file_path=filename,
@@ -44,11 +44,11 @@ async def _start(client, message):
         parent_id=parent_id,
         message=sent_message)
   if file_id not in ('error', 'LimitExceeded'):
-    await sent_message.edit("✅ **Uploaded Successfully.**\n<a href='https://drive.google.com/open?id={}'>{}</a> __({})__".format(file_id, file_name, filesize))
+    await sent_message.edit("✅ **Subido con éxito.**\n<a href='https://drive.google.com/open?id={}'>{}</a> __({})__".format(file_id, file_name, filesize))
   elif file_id == 'LimitExceeded':
-    await sent_message.edit('❗ **Upload limit exceeded**\n__Try after 24 hours__')
+    await sent_message.edit('❗ **Se superó el límite de carga**\n__Prueba después de 24 horas__')
   else:
-    await sent_message.edit('❗ **Uploading Error**\n__Please try again later.__')
+    await sent_message.edit('❗ **Error de carga**\n__Por favor, inténtelo de nuevo más tarde.__')
   os.remove(filename)
 
 async def download_file(client, message, sent_message):
@@ -63,14 +63,14 @@ async def download_file(client, message, sent_message):
     dl_path = os.path.join(f"downloads/{custom_file_name}")
   try:
     dl = SmartDL(url, dl_path, progress_bar=False)
-    await sent_message.edit(f'📥 **Downloading...**\n**Filename:** ```{custom_file_name}```')
+    await sent_message.edit(f'📥 **Descargando...**\n**Nombre del archivo:** ```{custom_file_name}```')
     dl.start()
     return dl.get_dest()
   except HTTPError:
     return 'HTTPError'
     await sent_message.reply_text(url)
   except Exception as e:
-    await sent_message.edit(f'📥 **Downloading...**\n**Filename:** ```{custom_file_name}```\n__Downloader failed trying again.__')
+    await sent_message.edit(f'📥 **Descargando...**\n**Nombre del archivo:** ```{custom_file_name}```\n__El descargador no pudo volver a intentarlo.__')
     try:
       filename = wget.download(url, dl_path)
       return os.path.join(f"downloads/{filename}")
