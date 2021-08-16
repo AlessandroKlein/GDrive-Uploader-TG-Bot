@@ -16,23 +16,23 @@ class Config:
 
 class Messages:
 
-    START_MSG = "**Hi there {}.**\n__I'm Google Drive Uploader Bot.You can use me to upload any file / video to Google Drive from direct link or Telegram Files.__\n__You can know more from /help.__"
+    START_MSG = "**Hola {}.**\n__Soy Google Drive Uploader Bot. Puedes usarme para cargar cualquier archivo / video a Google Drive desde un enlace directo o archivos de Telegram..__\n__Puedes saber más de /help.__"
 
     HELP_MSG = [
         ".",
-        "**Google Drive Uploader**\n__I can upload files from direct link or Telegram Files to your Google Drive. All i need is to authenticate me to your Google Drive Account and send a direct download link or Telegram File.__\n\nI have more features... ! Wanna know about it ? Just walkthrough this tutorial and read the messages carefully.",
+        "**Cargador de Google Drive**\n__Puedo cargar archivos desde un enlace directo o archivos de Telegram a su Google Drive. Todo lo que necesito es autenticarme en su cuenta de Google Drive y enviar un enlace de descarga directa o un archivo de Telegram.__\n\nITengo más funciones ...! ¿Quieres saberlo? Simplemente recorra este tutorial y lea los mensajes con atención.",
         
-        "**Authenticating Google Drive**\n__Send the /auth commmand and you will receive a URL, visit URL and follow the steps and send the received code here. Use /revoke to revoke your currently logged Google Drive Account.__",
+        "**Autenticar Google Drive**\n__Envía el /auth comando y recibirá una URL, visite URL y siga los pasos y envíe el código recibido aquí. Utilizar /revoke para revocar su cuenta de Google Drive actualmente registrada.__",
         
-        "**Direct Links**\n__Send me a direct download link for a file and i will download it on my server and Upload it to your Google Drive Account. You can rename files before uploading to GDrive Account. Just send me the URL and new filename separated by ' | '.__\n\n**__Examples:__**\n```https://example.com/AFileWithDirectDownloadLink.mkv | New FileName.mkv```",
+        "**Enlaces directos**\n__Envíeme un enlace de descarga directa para un archivo, lo descargaré en mi servidor y lo subiré a su cuenta de Google Drive. Puede cambiar el nombre de los archivos antes de cargarlos en la cuenta de GDrive. Solo envíeme la URL y el nuevo nombre de archivo separados por ' | '.__\n\n**__Ejemplos de:__**\n```https://example.com/AFileWithDirectDownloadLink.mkv | Nuevo FileName.mkv```",
         
-        "**Telegram Files**\n__To Upload telegram files in your Google drive Account just send me the file and i will download and upload it to your Google Drive Account. Note: Telegram Files Downloading are slow. it may take longer for big files.__",
+        "**Archivos de Telegram**\n__Para cargar archivos de telegram en su cuenta de Google Drive, simplemente envíeme el archivo y lo descargaré y lo subiré a su cuenta de Google Drive. Nota: La descarga de archivos de Telegram es lenta. puede llevar más tiempo para archivos grandes.__",
         
-        "**Custom Folder for Upload**\n__Want to upload in custom folder or in__ **TeamDrive** __ ?\nUse /setfolder {Folder ID / TeamDrive ID / Folder UrL} to set custom upload folder.\nAll the files are uploaded in the custom folder you provide.__",
+        "**Carpeta personalizada para subir**\n__Quiere cargar en una carpeta personalizada o en__ **TeamDrive** __ ?\nUtiliza /setfolder {Folder ID / TeamDrive ID / Folder UrL} para configurar una carpeta de carga personalizada.\nTodos los archivos se cargan en la carpeta personalizada que proporcionas..__",
         
-        "**Copy Google Drive Files**\n__Yes, Clone or Copy Google Drive Files.\nUse /copy {File id / Folder id or URL} to copy Google Drive Files in your Google Drive Account.__",
+        "**Copiar archivos de Google Drive**\n__Sí, clonar o copiar archivos de Google Drive.\nUtiliza /copy {File id / Folder id or URL} para copiar archivos de Google Drive en su cuenta de Google Drive.__",
         
-        "**Rules & Precautions**\n__1. Don't copy BIG Google Drive Files/Folders. It may hang the bot and your files maybe damaged.\n2. Send One request at a time unless bot will stop all processes.\n3. Don't send slow links @transload it first.\n4. Don't misuse, overload or abuse this free service.__",
+        "**Reglas y precauciones**\n__1. No copie GRANDES archivos / carpetas de Google Drive. Puede colgar el bot y sus archivos pueden dañarse.\n2. Envíe una solicitud a la vez a menos que el bot detenga todos los procesos.\n3. No envíe enlaces lentos @transfiéralo primero.\n4. No utilice mal, sobrecargue ni abuse de este servicio gratuito.__",
         
-        "**Developed by @viperadnan**"
+        "**Desarrollado por @**"
         ]
