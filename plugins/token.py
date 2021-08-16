@@ -18,7 +18,7 @@ async def _auth(client, message):
   if creds is not None:
     creds.refresh(Http())
     db.set_credential(message.from_user.id, creds)
-    await message.reply_text("🔒 **Already authorized your Google Drive Account.**\n__Use /revoke to revoke the current account.__\n__Send me a direct link or File to Upload on Google Drive__", quote=True)
+    await message.reply_text("🔒 **Ya autorizó su cuenta de Google Drive.**\n__Use /revoke para revocar la cuenta corriente.__\n__Envíeme un enlace directo o un archivo para cargar en Google Drive__", quote=True)
   else:
     global flow
     try:
@@ -29,7 +29,7 @@ async def _auth(client, message):
               redirect_uri=REDIRECT_URI
       )
       auth_url = flow.step1_get_authorize_url()
-      await client.send_message(message.from_user.id, "⛓️ **To Authorize your Google Drive account visit this [URL]({}) and send the generated code here.**\n__Visit the URL > Allow permissions > you will get a code > copy it > Send it here__".format(auth_url))
+      await client.send_message(message.from_user.id, "⛓️ **Para autorizar su cuenta de Google Drive, visite esta [URL] ({}) y envíe el código generado aquí..**\n__Visite la URL> Permitir permisos> obtendrá un código> cópielo> Envíelo aquí__".format(auth_url))
     except Exception as e:
       await message.reply_text(f"**ERROR:** ```{e}```", quote=True)
 
@@ -37,11 +37,11 @@ async def _auth(client, message):
 @Client.on_message(Filters.private & Filters.incoming & Filters.command(['revoke']))
 async def _revoke(client, message):
   if db.get_credential(message.from_user.id) is None:
-   await message.reply_text("🔑 **You have not authenticated me to upload to any account.**\n__Send /auth to authenticate.__", quote=True)
+   await message.reply_text("🔑 **No me has autenticado para subir a ninguna cuenta.**\n__Enviar /auth autenticar.__", quote=True)
   else:
     try:
       db.clear_credential(message.from_user.id)
-      await message.reply_text("🔓 **Authenticated Account revoked successfully.**", quote=True)
+      await message.reply_text("🔓 **Cuenta autenticada revocada con éxito.**", quote=True)
     except Exception as e:
       await message.reply_text(f"**ERROR:** ```{e}```", quote=True)
 
@@ -52,19 +52,19 @@ async def _set_parent(client, message):
     cmd_msg = message.command[1]
     if cmd_msg.lower() == "clear":
       sql.del_id(message.from_user.id)
-      await message.reply_text('**Custom Folder ID Cleared**\n__Use /setfolder <Folder URL> to set it back.__', quote=True)
+      await message.reply_text('**ID de carpeta personalizada borrado**\n__Use /setfolder <URL de carpeta> para restablecerla.__', quote=True)
     else:
       file_id = getIdFromUrl(cmd_msg)
       if 'NotFound' in file_id:
-        await message.reply_text('❗ Invalid Folder URL**\n__Copy the custom folder id correctly.__', quote=True)
+        await message.reply_text('❗ URL de carpeta no válida**\n__Copie la identificación de la carpeta personalizada correctamente.__', quote=True)
       else:
         sql.set_id(message.from_user.id, file_id)
-        await message.reply_text(f'**Custom Folder ID sets Successfully**\n__Your custom folder id set to {file_id}. All the uploads (from now) goes here.\nUse__ ```/setfolder clear``` __to clear the current Folder ID.__', quote=True)
+        await message.reply_text(f'**El ID de carpeta personalizado se establece correctamente**\n__Su ID de carpeta personalizada establecido en {file_id}. Todas las subidas (desde ahora) va aquí.\nUse__ ```/setfolder clear``` __para borrar el ID de carpeta actual.__', quote=True)
   else:
     if sql.get_id(message.from_user.id):
-      await message.reply_text(f'**Your custom folder id is** ```{sql.get_id(message.from_user.id).parent_id}```.', quote=True)
+      await message.reply_text(f'**Su ID de carpeta personalizada es** ```{sql.get_id(message.from_user.id).parent_id}```.', quote=True)
     else:
-      await message.reply_text('**You did not set any Custom Folder ID**\n__Use__ ```/setfolder {folder URL}``` __to set your custom folder ID.__', quote=True)
+      await message.reply_text('**No configuró ningún ID de carpeta personalizado**\n__Use__ ```/setfolder {folder URL}``` __para configurar su ID de carpeta personalizada.__', quote=True)
 
 @Client.on_message(Filters.private & Filters.incoming & Filters.text)
 async def _token(client, message):
@@ -75,18 +75,18 @@ async def _token(client, message):
     global flow
     if flow is None:
         await message.reply_text(
-            text="❗ **Invalid Code**\n__Run /auth first.__",
+            text="❗ **Codigo invalido**\n__Correr /auth primero.__",
             quote=True
         )
         return
     try:
-      m = await message.reply_text(text="**Checking received code...**", quote=True)
+      m = await message.reply_text(text="**Comprobando el código recibido...**", quote=True)
       creds = flow.step2_exchange(message.text)
       db.set_credential(message.from_user.id, creds)
-      await m.edit('**Authorized Google Drive account Successfully.**')
+      await m.edit('**Cuenta de Google Drive autorizada correctamente.**')
       flow = None
     except FlowExchangeError:
-      await m.edit('❗ **Invalid Code**\n__The code you have sent is invalid or already used before. Generate new one by the Authorization URl__')
+      await m.edit('❗ **Codigo invalido**\n__El código que ha enviado no es válido o ya se utilizó antes. Genere uno nuevo por la URL de autorización__')
     except Exception as e:
       await m.edit(f"**ERROR:** ```{e}```")
 
