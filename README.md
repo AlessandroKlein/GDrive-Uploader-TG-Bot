@@ -19,7 +19,7 @@
 ### Instalación
 - Clona este repositorio de git.
 ```sh 
-git clone https://github.com/cdfxscrq/gdrive-uploader-telegram-bot
+git clone https://github.com/AlessandroKlein/GDrive-Uploader-TG-Bot
 ```
 - Cambio de directorio
 ```sh 
